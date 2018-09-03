@@ -1,0 +1,39 @@
+package milestone
+
+import (
+	"encoding/json"
+
+	"github.com/beevik/guid"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/skillbill/models"
+	"github.com/skillbill/packages/repository"
+)
+
+type MilestoneSkillRepo struct {
+	repo repository.BaseRepo
+}
+
+func (t MilestoneSkillRepo) CreateMilestoneSkill(APIstub shim.ChaincodeStubInterface, milestoneID string, skillID string) (string, error) {
+	var mst = models.MilestoneSkill{
+		ID:          guid.New().StringUpper(),
+		MilestoneID: milestoneID,
+		SkillID:     skillID,
+		DocType:     "milestoneskill"}
+
+	data, _ := json.Marshal(mst)
+
+	err := t.repo.Save(APIstub, mst.MilestoneID, data)
+
+	return mst.MilestoneID, err
+}
+
+func (t MilestoneSkillRepo) GetSkillsByMilestone(APIstub shim.ChaincodeStubInterface, milestoneID string) ([]byte, error) {
+
+	var query = `{"selector":{ "milestoneid":` + milestoneID + `, "doctype":"milestoneskill"}, "fields":"skillid"}`
+
+	return t.repo.GetByQuery(APIstub, query)
+}
+
+func (t MilestoneSkillRepo) RemoveSkillFromMilestone(APIstub shim.ChaincodeStubInterface, id string) error {
+	return t.repo.Delete(APIstub, id)
+}

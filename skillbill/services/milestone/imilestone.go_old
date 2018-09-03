@@ -1,0 +1,24 @@
+package main
+
+import (
+	"github.com/skillbill/models"
+)
+
+type IMilestoneRepo interface {
+	GetMilestoneByQuery() ([]byte, error)
+	GetMilestoneByKey(key string) ([]byte, error)
+	CreateMilestone(milestone models.Milestone) (string, error)
+	// UpdateMilestone(APIstub shim.ChaincodeStubInterface, milestoneID string, milestoneTranslation string, trackId string, version string) error
+	// DeleteMilestone(APIstub shim.ChaincodeStubInterface, key string) error
+}
+
+// type IMilestoneSkillRepo interface {
+// 	CreateMilestoneSkill(APIstub shim.ChaincodeStubInterface, milestoneID string, skillID string) (string, error)
+// 	GetSkillsByMilestone(APIstub shim.ChaincodeStubInterface, query string) ([]byte, error)
+// }
+
+// type IMilestoneDependencyRepo interface {
+// 	CreateMilestoneDependency(APIstub shim.ChaincodeStubInterface, dependendingMst string, milestoneID string) (string, error)
+// 	GetDependingMstByMstID(APIstub shim.ChaincodeStubInterface, milestoneID string) ([]byte, error)
+// 	CheckDependency(APIstub shim.ChaincodeStubInterface, dependendingMst string, milestoneID string) (bool, error)
+// }
